@@ -1,0 +1,14 @@
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'HopOptimizationVisualizer',
+      #directory : 'src',
+      #platforms : [ #pharo ]
+    }
+  ],
+  
+  #testing : {
+  	 #categories : [ 'HopOptimizationVisualizer' ],
+  	 #defaultTimeout : 120
+   	}
+}
