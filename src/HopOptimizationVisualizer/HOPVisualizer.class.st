@@ -37,16 +37,28 @@ HOPVisualizer >> openOnJSSource: aJSSource [
 { #category : #'as yet unclassified' }
 HOPVisualizer >> openOnJSSource: aJSSource cacheSource: cacheSource [
 
+	rubricModel sourceCode: aJSSource.
 	self processCacheSource: cacheSource.
-	self openOnJSSource: aJSSource
+	^ rubricModel open
 ]
 
 { #category : #'as yet unclassified' }
 HOPVisualizer >> processCacheSource: cacheSource [
-	| allCaches |
+	| allCaches h |
 	allCaches := ((STONJSON fromString: cacheSource) at: 'sources') first at: 'caches'.
 	allCaches do: [ :dic |
-		self highlightTokenAt: (dic at: 'point') 
+		(dic at: 'point') ~= -1 ifTrue: [
+			h := HOPCodeHighlight new.
+			h usage: (dic at: 'usage').
+			h index: (dic at: 'point') + 2.
+			h cmap: (dic at: 'cmap' ifAbsent: [ 0 ]).
+			h emap: (dic at: 'emap' ifAbsent: [ 0 ]).
+			h amap: (dic at: 'amap' ifAbsent: [ 0 ]).
+			h pmap: (dic at: 'pmap' ifAbsent: [ 0 ]).
+			h imap: (dic at: 'imap' ifAbsent: [ 0 ]).
+			h vtable: (dic at: 'vtable' ifAbsent: [ 0 ]).
+			rubricModel addHighlight: h
+		]
 	].
 
 ]

@@ -399,7 +399,10 @@ HOPTRACE=""hopscript:cache format:json"" ./a.out 2> traceCache.json
 ]
 
 { #category : #tests }
-HOPBasicTest >> testBasic [ 
-
-	HOPVisualizer new openOnJSSource: HOPBasicTest new exampleJS cacheSource: HOPBasicTest new exampleCacheAndLocationJSON
+HOPBasicTest >> testBasic [
+	| window |
+	[ window := HOPVisualizer new
+		openOnJSSource: HOPBasicTest new exampleJS
+		cacheSource: HOPBasicTest new exampleCacheAndLocationJSON ]
+		ensure: [ window ifNotNil: [ window delete ] ]
 ]

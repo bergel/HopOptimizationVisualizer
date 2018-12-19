@@ -8,10 +8,44 @@ Class {
 	#category : #HopOptimizationVisualizer
 }
 
+{ #category : #accessing }
+HOPRubric >> addHighlight: anHighlight [
+ 	| token index segment |
+	anHighlight index = -1 ifTrue: [ ^ self ].
+	anHighlight index > self sourceCode size ifTrue: [ ^ self ].
+	
+	token := self tokenAtIndex: anHighlight index.
+	index := anHighlight index.
+	segment := RubPlainSegmentMorph from: index to: index + token size.
+	segment setBalloonText: 'hello'.
+	segment color: (Color green alpha: 0.3).
+	self addSegment: segment.
+	segments add: segment
+	
+	
+"	seg := RubPlainSegmentMorph from: index to: index + token size.
+	seg setBalloonText: 'hello'.
+	seg color: (Color green alpha: 0.3).
+	seg icon: (self iconNamed: #smallErrorIcon).
+	seg label: 'Please review'."
+]
+
+{ #category : #public }
+HOPRubric >> addSegment: aSegment [
+	segments add: aSegment
+]
+
 { #category : #public }
 HOPRubric >> highlightTokenAt: index [
-	| seg |
-	seg := RubUnderlinedSegmentMorph from: index to: index + 5.
+	| seg token |
+	"Not much to do in that case"
+	index = -1 ifTrue: [ ^ self ].
+	
+	token := self tokenAtIndex: index.
+	
+	seg := RubPlainSegmentMorph from: index to: index + token size.
+	seg setBalloonText: 'hello'.
+	seg color: (Color green alpha: 0.3).
 	seg icon: (self iconNamed: #smallErrorIcon).
 	seg label: 'Please review'.
 	segments add: seg
@@ -27,7 +61,7 @@ HOPRubric >> initialize [
 { #category : #public }
 HOPRubric >> open [
 	<script: 'self new open'>
-	self presentation openOn: self sourceCode
+	^ self presentation openOn: self sourceCode
 ]
 
 { #category : #public }
@@ -94,6 +128,16 @@ HOPRubric >> sourceCode [
 { #category : #accessing }
 HOPRubric >> sourceCode: sourceCodeAsString [
 	sourceCode := sourceCodeAsString
+]
+
+{ #category : #accessing }
+HOPRubric >> tokenAtIndex: index [
+	| running tokenLetter |
+	running := index.
+	tokenLetter := OrderedCollection new.
+	[ (self sourceCode at: running) isAlphaNumeric ] whileTrue: 
+		[ tokenLetter add: (self sourceCode at: running). running := running + 1 ].
+	^ tokenLetter collect: #yourself as: String
 ]
 
 { #category : #public }
