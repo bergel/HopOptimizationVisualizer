@@ -17,8 +17,8 @@ HOPRubric >> addHighlight: anHighlight [
 	token := self tokenAtIndex: anHighlight index.
 	index := anHighlight index.
 	segment := RubPlainSegmentMorph from: index to: index + token size.
-	segment setBalloonText: 'hello'.
-	segment color: (Color green alpha: 0.3).
+	segment setBalloonText: anHighlight displayString.
+	segment color: anHighlight color.
 	self addSegment: segment.
 	segments add: segment
 	
@@ -35,14 +35,25 @@ HOPRubric >> addSegment: aSegment [
 	segments add: aSegment
 ]
 
+{ #category : #accessing }
+HOPRubric >> highlightFunctionDeclarations [
+
+	| indices |
+	indices := self sourceCode asString indicesOfTokens: 'function'.	
+	indices do: [ :i |
+		"self sourceCode addAttribute: TextColor blue from: i to: (i + 'function' size)"
+		self underlineTokenAt: i.
+	]
+
+]
+
 { #category : #public }
 HOPRubric >> highlightTokenAt: index [
 	| seg token |
 	"Not much to do in that case"
 	index = -1 ifTrue: [ ^ self ].
 	
-	token := self tokenAtIndex: index.
-	
+	token := self tokenAtIndex: index.	
 	seg := RubPlainSegmentMorph from: index to: index + token size.
 	seg setBalloonText: 'hello'.
 	seg color: (Color green alpha: 0.3).
@@ -61,6 +72,7 @@ HOPRubric >> initialize [
 { #category : #public }
 HOPRubric >> open [
 	<script: 'self new open'>
+	
 	^ self presentation openOn: self sourceCode
 ]
 
@@ -127,7 +139,8 @@ HOPRubric >> sourceCode [
 
 { #category : #accessing }
 HOPRubric >> sourceCode: sourceCodeAsString [
-	sourceCode := sourceCodeAsString
+	sourceCode := sourceCodeAsString asText.
+	self highlightFunctionDeclarations.
 ]
 
 { #category : #accessing }
@@ -143,7 +156,7 @@ HOPRubric >> tokenAtIndex: index [
 { #category : #public }
 HOPRubric >> underlineTokenAt: index [
 	| seg |
-	seg := RubUnderlinedSegmentMorph from: index to: index + 5.
+	seg := RubUnderlinedSegmentMorph from: index to: index + (self tokenAtIndex: index) size.
 	seg icon: (self iconNamed: #smallErrorIcon).
 	seg label: 'Please review'.
 	segments add: seg

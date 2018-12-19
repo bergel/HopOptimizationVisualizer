@@ -35,6 +35,60 @@ HOPCodeHighlight >> cmap: aPositiveInteger [
 ]
 
 { #category : #accessing }
+HOPCodeHighlight >> color [
+	"Color used to presented to Rubric"
+	
+	"Inspired from https://coderwall.com/p/dvsxwg/smoothly-transition-from-green-to-red
+(1 - 0.00) * 120 = 120 ( green )
+(1 - 0.25) * 120 = 90 ( light green )
+(1 - 0.50) * 120 = 60 ( yellow )
+(1 - 0.75) * 120 = 30 ( orange )
+(1 - 1.00) * 120 = 0 ( red )	
+	
+	"
+	| colors values |
+"	colors := { 
+		(Color h: 120 s: 1 l: 0.5) .
+		(Color h: 90 s: 1 l: 0.5) .
+		(Color h: 60 s: 1 l: 0.5) .
+		(Color h: 30 s: 1 l: 0.5) .
+		(Color h: 0 s: 1 l: 0.5)
+	}."
+	colors := { 
+		(Color h: 120 s: 1 l: 0.5) .
+		(Color h: 86 s: 1 l: 0.5) .
+		(Color h: 62 s: 1 l: 0.5) .
+		(Color h: 48 s: 1 l: 0.5) .
+		(Color h: 24 s: 1 l: 0.5) .
+		(Color h: 0 s: 1 l: 0.5)
+	}.
+	
+	values := { amap . cmap . imap . pmap . emap . vtable }.
+	values with: colors do: [ :v :c | (v > 0) ifTrue: [ ^ c alpha: 0.3 ] ].
+	^ Color gray alpha: 0.3
+
+]
+
+{ #category : #initialization }
+HOPCodeHighlight >> displayString [
+	| w |
+	w := WriteStream on: String new.
+	w nextPutAll: 'imap = ', imap asString.
+	w cr.
+	w nextPutAll: 'pmap = ', pmap asString.
+	w cr.
+	w nextPutAll: 'vtable = ', vtable asString.
+	w cr.
+	w nextPutAll: 'amap = ', amap asString.
+	w cr.
+	w nextPutAll: 'cmap = ', cmap asString.
+	w cr.
+	w nextPutAll: 'emap = ', emap asString.
+	w cr.
+	^ w contents
+]
+
+{ #category : #accessing }
 HOPCodeHighlight >> emap [
 	^ emap
 ]
