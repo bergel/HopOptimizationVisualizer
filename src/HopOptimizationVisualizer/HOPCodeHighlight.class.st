@@ -11,7 +11,8 @@ Class {
 		'amap',
 		'vtable',
 		'token',
-		'highlightCollection'
+		'highlightCollection',
+		'weightedSumCache'
 	],
 	#classVars : [
 		'ColorTable'
@@ -52,22 +53,25 @@ HOPCodeHighlight >> color [
 	
 	"
 
-	| values |
+	| allWeights weight tt |
 	self initializeColorTableIfNecessary.
 	"values := { amap . cmap . imap. pmap. emap . vtable }."
 	"imap = iclass
 	emap is like imap, but only for writting
 	amap = we use an accessor (Maybe we should use a different visual cue)
 	pmap = the property is found within the prototype chain
-	
 	"
-	values := { imap . emap . cmap  . amap . pmap . vtable }.
+"	values := { imap . emap . cmap  . amap . pmap . vtable }.
 	values
 		with: ColorTable
 		do: [ :v :c | 
 			v > 0
-				ifTrue: [ ^ c alpha: 0.3 ] ].
-	^ Color gray alpha: 0.3
+				ifTrue: [ ^ c alpha: 0.3 ] ]."
+
+	tt := self weightedSum / (highlightCollection highlights collect: #weightedSum) max.
+
+	^ ColorTable at: (ColorTable size - 1 * tt) asInteger + 1
+	"^ Color gray alpha: 0.3"
 ]
 
 { #category : #initialization }
@@ -206,6 +210,7 @@ b := RTGrapher new.
 #(#imap #cmap #emap #amap #pmap #vtable) doWithIndex: [ :k :ind | 
 	(self perform: k) ~= 0 ifTrue: [
 		d := RTBoxPlotDataSet new.
+		d outlierShape size: 5.
 		d points: (highlightCollection collect: k).
 		d y: #yourself.
 		d x: ind.
@@ -237,4 +242,23 @@ HOPCodeHighlight >> vtable [
 { #category : #'accessing caches' }
 HOPCodeHighlight >> vtable: aPositiveInteger [
 	vtable := aPositiveInteger
+]
+
+{ #category : #accessing }
+HOPCodeHighlight >> weightedSum [
+
+	| allWeights weight |
+	weightedSumCache ifNotNil: [ ^ weightedSumCache ].
+	
+	allWeights := { 1 . 1 . 10 . 20 . 30 . 100 }.
+	weight := 0.
+
+	{ #imap . #emap . #cmap  . #amap . #pmap . #vtable } 
+	with: allWeights
+	do: [ :k :w |
+		| t |
+		t := highlightCollection levelOf: (self perform: k) for: k.
+		weight := weight + (t * w)
+	].
+	^ weightedSumCache := weight asFloat
 ]
