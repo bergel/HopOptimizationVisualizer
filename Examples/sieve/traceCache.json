@@ -1,0 +1,180 @@
+{
+"format": "json",
+"caches": {
+  "accesses": 101192956,
+  "hits": 101192937,
+  "misses": 19,
+  "multis": 0,
+  "uncaches": {
+    "total": 0,
+    "get": 0,
+    "put": 0,
+    "call": 91
+  },
+  "imap": {
+    "get": {
+      "total": 50168480,
+      "entries": [
+        { "cdr": 25514252 }, 
+        { "car": 24654228 }, 
+        -1 ]
+    },
+    "put": {
+      "total": 0,
+      "entries": [
+        -1 ]
+    },
+    "call": {
+      "total": 0,
+      "entries": [
+        -1 ]
+    }
+  },
+  "emap": {
+    "get": {
+      "total": 0,
+      "entries": [
+        -1 ]
+    },
+    "put": {
+      "total": 51024457,
+      "entries": [
+        { "cdr": 25512229 }, 
+        { "car": 25512228 }, 
+        -1 ]
+    },
+    "call": {
+      "total": 0,
+      "entries": [
+        -1 ]
+    }
+  },
+  "cmap": {
+    "get": {
+      "total": 0,
+      "entries": [
+        -1 ]
+    },
+    "put": {
+      "total": 0,
+      "entries": [
+        -1 ]
+    },
+    "call": {
+      "total": 0,
+      "entries": [
+        -1 ]
+    }
+  },
+  "pmap": {
+    "get": {
+      "total": 0,
+      "entries": [
+        -1 ]
+    },
+    "put": {
+      "total": 0,
+      "entries": [
+        -1 ]
+    },
+    "call": {
+      "total": 0,
+      "entries": [
+        -1 ]
+    }
+  },
+  "amap": {
+    "get": {
+      "total": 0,
+      "entries": [
+        -1 ]
+    },
+    "put": {
+      "total": 0,
+      "entries": [
+        -1 ]
+    },
+    "call": {
+      "total": 0,
+      "entries": [
+        -1 ]
+    }
+  },
+  "vtable": {
+    "get": {
+      "total": 0,
+      "entries": [
+        -1 ]
+    },
+    "put": {
+      "total": 0,
+      "entries": [
+        -1 ]
+    },
+    "call": {
+      "total": 0,
+      "entries": [
+        -1 ]
+    }
+  },
+  "hclasses": 101164,
+  "invalidations": 132,
+  "vtables": { "number": 0, "mem": 0, "locations": 0, "degree":0, "conflicts":0}
+},
+"config": {
+  "tmp": "/tmp/alexandrebergel/J2S/example.js",
+  "optim-callapply": true,
+  "optim-clevel": true,
+  "optim-tyflow": true,
+  "optim-multivar": true,
+  "optim-cinstanceof": true,
+  "optim-tyflow-resolve": true,
+  "optim-unletrec": true,
+  "optim-letopt": true,
+  "optim-method": true,
+  "optim-pce": true,
+  "optim-vector": true,
+  "optim-ctor": true,
+  "optim-range": true,
+  "optim-hintnum": true,
+  "optim-hint": true,
+  "optim-array": true,
+  "optim-literals": true,
+  "optim-inline": true,
+  "optim-integer": true,
+  "profile-method": true,
+  "profile-hint": true,
+  "profile-cache": true,
+  "profile-call": true,
+  "commonjs-export": true,
+  "return-as-exit": false,
+  "filename": "example.js",
+  "driver-name": "j2s-optim-driver",
+  "worker": true,
+  "worker-slave": false,
+  "module-main": true,
+  "module-name": "example",
+  "module-path": false,
+  "hopscript-header": true,
+  "type-annotations": false,
+  "optim": 1000,
+  "verbose": 2,
+  "long-size": 64,
+  "int-size": 61,
+  "plugins-loader": false,
+  "debug": 0,
+  "optim-ccall": true,
+  "profile": true,
+  "es6-let": true,
+  "es6-const": true,
+  "es6-arrow-function": true,
+  "es6-default-value": true,
+  "es6-rest-argument": true,
+  "es2017-async": true,
+  "debug-client": 0
+},
+"run": {
+  "commandline": "./a.out",
+  "date": "Wed Dec 19 07:36:56 2018"
+  }
+}
