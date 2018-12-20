@@ -21,6 +21,19 @@ HOPVisualizer >> colorMapping: aCM [
 ]
 
 { #category : #'public - examples' }
+HOPVisualizer >> ddexampleSmallExample [
+	<script: 'self new ddexampleSmallExample'>
+	
+	| path |
+	path := '/Users/alexandrebergel/Dropbox/GitRepos/HopOptimizationVisualizer/Examples/fields_accessors/'.
+	
+	^ self 
+		openOnJSFilename: path, 'fields.js' cacheFilename: path, 'traceCache.json'
+		
+	
+]
+
+{ #category : #'public - examples' }
 HOPVisualizer >> example [
 	<script: 'self new example'>
 	^ self 
@@ -32,19 +45,6 @@ HOPVisualizer >> exampleRichards [
 	<script: 'self new exampleRichards'>
 	^ self 
 		openOnJSSource: HOPBasicTest new exampleRichardsJS cacheSource: HOPBasicTest new exampleRichardCacheAndLocationJSON
-]
-
-{ #category : #'public - examples' }
-HOPVisualizer >> exampleSmallExample [
-	<script: 'self new exampleSmallExample'>
-	
-	| path |
-	path := '/Users/alexandrebergel/Dropbox/GitRepos/HopOptimizationVisualizer/Examples/fields_accessors/'.
-	
-	^ self 
-		openOnJSFilename: path, 'fields.js' cacheFilename: path, 'traceCache.json'
-		
-	
 ]
 
 { #category : #initialize }
