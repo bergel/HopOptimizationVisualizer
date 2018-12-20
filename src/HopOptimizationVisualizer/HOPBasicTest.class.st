@@ -1238,7 +1238,7 @@ HOPBasicTest >> testBasic2 [
 	h := HOPVisualizer new.
 	h setJSSource: HOPBasicTest new exampleJS cacheSource: HOPBasicTest new exampleCacheAndLocationJSON.
 	
-	self assert: h rubricModel numberOfSegments equals: 29.
+	self assert: h rubricModel numberOfHighlights equals: 9.
 ]
 
 { #category : #tests }

@@ -3,25 +3,18 @@ Class {
 	#superclass : #Model,
 	#instVars : [
 		'sourceCode',
-		'segments'
+		'segments',
+		'highlightCollection'
 	],
 	#category : #HopOptimizationVisualizer
 }
 
 { #category : #accessing }
 HOPRubric >> addHighlight: anHighlight [
- 	| token index segment |
 	anHighlight index = -1 ifTrue: [ ^ self ].
 	anHighlight index > self sourceCode size ifTrue: [ ^ self ].
 	
-	token := self tokenAtIndex: anHighlight index.
-	index := anHighlight index.
-	segment := RubPlainSegmentMorph from: index to: index + token size.
-	segment setBalloonText: anHighlight displayString.
-	segment color: anHighlight color.
-	self addSegment: segment.
-	segments add: segment
-	
+	highlightCollection add: anHighlight.
 	
 "	seg := RubPlainSegmentMorph from: index to: index + token size.
 	seg setBalloonText: 'hello'.
@@ -64,6 +57,13 @@ HOPRubric >> initialize [
 	super initialize.
 	self setDefaultSourceCode.
 	segments := OrderedCollection new.
+	highlightCollection := HOPCodeHighlightCollection new
+]
+
+{ #category : #public }
+HOPRubric >> numberOfHighlights [
+	"Return the number of highlights in the rubric model"
+	^ highlightCollection numberOfHighlights
 ]
 
 { #category : #public }
@@ -87,6 +87,7 @@ HOPRubric >> openOnSource: aSourceAsString [
 
 { #category : #'instance creation' }
 HOPRubric >> presentation [
+	"This code is called only when the I am properly initialized"
 	"textFont: StandardFonts codeFont;"
 	^ GLMCompositePresentation new
 		with: [ :a | 
@@ -102,6 +103,7 @@ HOPRubric >> presentation [
 			t tabWidth: 40.
 			t withColumns: true.
 "	
+			self processHighlights.
 			segments do: [ :s | t addTextSegment: s ].		
 "			seg := RubUnderlinedSegmentMorph from: 1 to: 29.
 			seg icon: (self iconNamed: #smallErrorIcon).
@@ -125,6 +127,21 @@ HOPRubric >> presentation [
 			seg iconBlock: [ :segment :event | Transcript show: segment getText ].
 			t addTextSegment: seg"
 			]
+]
+
+{ #category : #accessing }
+HOPRubric >> processHighlights [
+	"Process the highlights"
+	| token index segment |
+	highlightCollection
+		do: [ :anHighlight | 
+			token := self tokenAtIndex: anHighlight index.
+			index := anHighlight index.
+			segment := RubPlainSegmentMorph from: index to: index + token size.
+			segment setBalloonText: anHighlight displayString.
+			segment color: anHighlight color.
+			self addSegment: segment.
+			segments add: segment ]
 ]
 
 { #category : #initialization }
@@ -161,13 +178,5 @@ HOPRubric >> tokenAtIndex: index [
 
 { #category : #public }
 HOPRubric >> underlineTokenAt: index [
-	| seg |
-	
-	"seg := RubTextSelectionColor from: index to: index + (self tokenAtIndex: index) size."
-	"seg colorBlock: Color blue."
-	
-	seg := RubUnderlinedSegmentMorph from: index to: index + (self tokenAtIndex: index) size.
-"	seg icon: (self iconNamed: #smallErrorIcon).
-	seg label: 'Please review'."
-	segments add: seg
+	self addSegment: (RubUnderlinedSegmentMorph from: index to: index + (self tokenAtIndex: index) size)
 ]
