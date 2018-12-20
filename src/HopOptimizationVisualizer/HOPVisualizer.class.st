@@ -15,6 +15,13 @@ HOPVisualizer >> example [
 ]
 
 { #category : #'as yet unclassified' }
+HOPVisualizer >> exampleRichards [
+	<script: 'self new exampleRichards'>
+	self 
+		openOnJSSource: HOPBasicTest new exampleRichardsJS cacheSource: HOPBasicTest new exampleRichardCacheAndLocationJSON
+]
+
+{ #category : #'as yet unclassified' }
 HOPVisualizer >> highlightTokenAt: index [
 	rubricModel highlightTokenAt: index
 ]
@@ -27,6 +34,14 @@ HOPVisualizer >> initialize [
 
 { #category : #'as yet unclassified' }
 HOPVisualizer >> openOnJSFilename: aFilename cacheFilename: cacheFilename [
+	"Public method"
+	
+	"
+	self new 
+		openOnJSFilename: '/Users/alexandrebergel/Dropbox/GitRepos/HopOptimizationVisualizer/Examples/richards/richards.js' 
+		cacheFilename:    '/Users/alexandrebergel/Dropbox/GitRepos/HopOptimizationVisualizer/Examples/richards/traceCache.json' 
+	"
+	^ self openOnJSSource: aFilename asFileReference contents cacheSource: cacheFilename asFileReference contents
 ]
 
 { #category : #'as yet unclassified' }
@@ -36,7 +51,7 @@ HOPVisualizer >> openOnJSSource: aJSSource [
 
 { #category : #'as yet unclassified' }
 HOPVisualizer >> openOnJSSource: aJSSource cacheSource: cacheSource [
-
+	"Public method"
 	rubricModel sourceCode: aJSSource.
 	self processCacheSource: cacheSource.
 	^ rubricModel open

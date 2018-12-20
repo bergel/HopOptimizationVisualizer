@@ -54,11 +54,8 @@ HOPRubric >> highlightTokenAt: index [
 	index = -1 ifTrue: [ ^ self ].
 	
 	token := self tokenAtIndex: index.	
-	seg := RubPlainSegmentMorph from: index to: index + token size.
-	seg setBalloonText: 'hello'.
+	seg := RubPlainSegmentMorph from: index to: index + token size.	
 	seg color: (Color green alpha: 0.3).
-	seg icon: (self iconNamed: #smallErrorIcon).
-	seg label: 'Please review'.
 	segments add: seg
 ]
 
@@ -156,8 +153,12 @@ HOPRubric >> tokenAtIndex: index [
 { #category : #public }
 HOPRubric >> underlineTokenAt: index [
 	| seg |
+	
+	"seg := RubTextSelectionColor from: index to: index + (self tokenAtIndex: index) size."
+	"seg colorBlock: Color blue."
+	
 	seg := RubUnderlinedSegmentMorph from: index to: index + (self tokenAtIndex: index) size.
-	seg icon: (self iconNamed: #smallErrorIcon).
-	seg label: 'Please review'.
+"	seg icon: (self iconNamed: #smallErrorIcon).
+	seg label: 'Please review'."
 	segments add: seg
 ]

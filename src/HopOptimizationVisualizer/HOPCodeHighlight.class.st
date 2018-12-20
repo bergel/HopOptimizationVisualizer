@@ -54,11 +54,12 @@ HOPCodeHighlight >> color [
 	self initializeColorTableIfNecessary.
 	"values := { amap . cmap . imap. pmap. emap . vtable }."
 	"imap = iclass
+	emap is like imap, but only for writting
 	amap = we use an accessor (Maybe we should use a different visual cue)
 	pmap = the property is found within the prototype chain
-	cmap is like emap
+	
 	"
-	values := { imap . cmap . emap . amap . pmap . vtable }.
+	values := { imap . emap . cmap  . amap . pmap . vtable }.
 	values
 		with: ColorTable
 		do: [ :v :c | 
@@ -72,11 +73,12 @@ HOPCodeHighlight >> displayString [
 	| w |
 	w := WriteStream on: String new.
 	w nextPutAll: 'imap = '; nextPutAll: imap asString; cr.
-	w nextPutAll: 'pmap = '; nextPutAll: pmap asString; cr.
-	w nextPutAll: 'vtable = '; nextPutAll: vtable asString; cr.
-	w nextPutAll: 'amap = '; nextPutAll: amap asString; cr.
 	w nextPutAll: 'cmap = '; nextPutAll: cmap asString; cr.
 	w nextPutAll: 'emap = '; nextPutAll: emap asString; cr.
+	w nextPutAll: 'amap = '; nextPutAll: amap asString; cr.
+	w nextPutAll: 'pmap = '; nextPutAll: pmap asString; cr.
+	w nextPutAll: 'vtable = '; nextPutAll: vtable asString; cr.
+	w cr.
 	w nextPutAll: 'usage = '; nextPutAll: usage.
 	^ w contents
 ]
