@@ -2,10 +2,23 @@ Class {
 	#name : #HOPVisualizer,
 	#superclass : #Object,
 	#instVars : [
-		'rubricModel'
+		'rubricModel',
+		'colorMapping'
 	],
 	#category : #HopOptimizationVisualizer
 }
+
+{ #category : #accessing }
+HOPVisualizer >> colorMapping [
+	"Return the color mapping used by the highlights"
+	^ colorMapping 
+]
+
+{ #category : #accessing }
+HOPVisualizer >> colorMapping: aCM [
+	"Set the color mapping used by the highlights"
+	colorMapping := aCM
+]
 
 { #category : #'public - examples' }
 HOPVisualizer >> example [
@@ -21,18 +34,15 @@ HOPVisualizer >> exampleRichards [
 		openOnJSSource: HOPBasicTest new exampleRichardsJS cacheSource: HOPBasicTest new exampleRichardCacheAndLocationJSON
 ]
 
-{ #category : #'as yet unclassified' }
-HOPVisualizer >> highlightTokenAt: index [
-	rubricModel highlightTokenAt: index
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #initialize }
 HOPVisualizer >> initialize [
 	super initialize.
-	rubricModel := HOPRubric new
+	rubricModel := HOPRubric new.
+	colorMapping := HOPMostRelevantMethodMapping new.
+	"colorMapping := HOPNumberOfExecutionMapping new."
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'public - opening' }
 HOPVisualizer >> openOnJSFilename: aFilename cacheFilename: cacheFilename [
 	"Public method"
 	
@@ -44,20 +54,21 @@ HOPVisualizer >> openOnJSFilename: aFilename cacheFilename: cacheFilename [
 	^ self openOnJSSource: aFilename asFileReference contents cacheSource: cacheFilename asFileReference contents
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'public - opening' }
 HOPVisualizer >> openOnJSSource: aJSSource [
 	rubricModel openOnSource: aJSSource
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'public - opening' }
 HOPVisualizer >> openOnJSSource: aJSSource cacheSource: cacheSource [
 	"Public method"
 	self setJSSource: aJSSource cacheSource: cacheSource.
 	^ rubricModel open
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 HOPVisualizer >> processCacheSource: cacheSource [
+	"Populate the rubric model"
 	| allCaches h |
 	allCaches := ((STONJSON fromString: cacheSource) at: 'sources') first at: 'caches'.
 	allCaches do: [ :dic |
@@ -83,15 +94,16 @@ HOPVisualizer >> rubricModel [
 	^ rubricModel 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 HOPVisualizer >> setJSSource: aJSSource cacheSource: cacheSource [
 	"Public method"
 	self sourceCode: aJSSource.
 	self processCacheSource: cacheSource.
+	rubricModel colorMapping: colorMapping.
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 HOPVisualizer >> sourceCode: aJSSource [
 	"Set the source code"
 	rubricModel sourceCode: aJSSource

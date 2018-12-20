@@ -1,3 +1,6 @@
+"
+Contains some benchmarks about the source code rendering
+"
 Class {
 	#name : #HOPVisualizerBenchmark,
 	#superclass : #Object,

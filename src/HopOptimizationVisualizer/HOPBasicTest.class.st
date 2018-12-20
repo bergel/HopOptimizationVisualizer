@@ -4,7 +4,7 @@ Class {
 	#category : #HopOptimizationVisualizer
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #example }
 HOPBasicTest >> exampleCacheAndLocationJSON [
 "
 Need to use the option
@@ -94,7 +94,7 @@ STONJSON fromString: self new exampleCacheAndLocationJSON
 '
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #example }
 HOPBasicTest >> exampleJS [
 
 ^ '
@@ -205,7 +205,7 @@ function main() {
 main();'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #example }
 HOPBasicTest >> exampleJSON [
 
 "This JSON has been obtained by executing:
@@ -398,7 +398,7 @@ HOPTRACE=""hopscript:cache format:json"" ./a.out 2> traceCache.json
 '
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #example }
 HOPBasicTest >> exampleRichardCacheAndLocationJSON [
 "
 Need to use the option
@@ -660,7 +660,7 @@ STONJSON fromString: self new exampleCacheAndLocationJSON
 '
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #example }
 HOPBasicTest >> exampleRichardsJS [
 ^ '// Copyright 2006-2008 the V8 project authors. All rights reserved.
 // Redistribution and use in source and binary forms, with or without
@@ -1239,6 +1239,18 @@ HOPBasicTest >> testBasic2 [
 	h setJSSource: HOPBasicTest new exampleJS cacheSource: HOPBasicTest new exampleCacheAndLocationJSON.
 	
 	self assert: h rubricModel numberOfHighlights equals: 9.
+]
+
+{ #category : #tests }
+HOPBasicTest >> testBasic3WithDifferentColorMapping [
+	| h cm |
+	h := HOPVisualizer new.
+	cm := HOPNumberOfExecutionMapping new.
+	h colorMapping: cm.
+	h setJSSource: HOPBasicTest new exampleJS cacheSource: HOPBasicTest new exampleCacheAndLocationJSON.
+	
+	self assert: h rubricModel numberOfHighlights equals: 9.
+	self assert: (h rubricModel highlights highlights allSatisfy: [ :hh | hh colorMapping == cm ])
 ]
 
 { #category : #tests }

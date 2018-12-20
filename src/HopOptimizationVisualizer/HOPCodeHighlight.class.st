@@ -12,7 +12,8 @@ Class {
 		'vtable',
 		'token',
 		'highlightCollection',
-		'weightedSumCache'
+		'colorMapping',
+		'metricCache'
 	],
 	#classVars : [
 		'ColorTable'
@@ -53,7 +54,7 @@ HOPCodeHighlight >> color [
 	
 	"
 
-	| allWeights weight tt |
+	| tt |
 	self initializeColorTableIfNecessary.
 	"values := { amap . cmap . imap. pmap. emap . vtable }."
 	"imap = iclass
@@ -68,10 +69,22 @@ HOPCodeHighlight >> color [
 			v > 0
 				ifTrue: [ ^ c alpha: 0.3 ] ]."
 
-	tt := self weightedSum / (highlightCollection highlights collect: #weightedSum) max.
+	tt := self metric / (highlightCollection highlights collect: #metric) max.
 
 	^ ColorTable at: (ColorTable size - 1 * tt) asInteger + 1
 	"^ Color gray alpha: 0.3"
+]
+
+{ #category : #accessing }
+HOPCodeHighlight >> colorMapping [
+	"Return the colorMapping used to compute the color scale"
+	^ colorMapping
+]
+
+{ #category : #accessing }
+HOPCodeHighlight >> colorMapping: aCM [
+	"Set the color mapping used to compute the color"
+	colorMapping := aCM 
 ]
 
 { #category : #initialization }
@@ -169,6 +182,12 @@ HOPCodeHighlight >> initializeColorTableIfNecessary [
 			(Color h: 0 s: 1 l: 0.5)} ]
 ]
 
+{ #category : #accessing }
+HOPCodeHighlight >> metric [
+	metricCache ifNotNil: [ ^ metricCache ].
+	^ metricCache := colorMapping computeMappingMetricFor: self
+]
+
 { #category : #'accessing caches' }
 HOPCodeHighlight >> pmap [
 	^ pmap
@@ -242,23 +261,4 @@ HOPCodeHighlight >> vtable [
 { #category : #'accessing caches' }
 HOPCodeHighlight >> vtable: aPositiveInteger [
 	vtable := aPositiveInteger
-]
-
-{ #category : #accessing }
-HOPCodeHighlight >> weightedSum [
-
-	| allWeights weight |
-	weightedSumCache ifNotNil: [ ^ weightedSumCache ].
-	
-	allWeights := { 1 . 1 . 10 . 20 . 30 . 100 }.
-	weight := 0.
-
-	{ #imap . #emap . #cmap  . #amap . #pmap . #vtable } 
-	with: allWeights
-	do: [ :k :w |
-		| t |
-		t := highlightCollection levelOf: (self perform: k) for: k.
-		weight := weight + (t * w)
-	].
-	^ weightedSumCache := weight asFloat
 ]
