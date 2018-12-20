@@ -52,8 +52,7 @@ HOPVisualizer >> openOnJSSource: aJSSource [
 { #category : #'as yet unclassified' }
 HOPVisualizer >> openOnJSSource: aJSSource cacheSource: cacheSource [
 	"Public method"
-	rubricModel sourceCode: aJSSource.
-	self processCacheSource: cacheSource.
+	self setJSSource: aJSSource cacheSource: cacheSource.
 	^ rubricModel open
 ]
 
@@ -76,4 +75,24 @@ HOPVisualizer >> processCacheSource: cacheSource [
 		]
 	].
 
+]
+
+{ #category : #accessing }
+HOPVisualizer >> rubricModel [
+	"Return the Rubric model"
+	^ rubricModel 
+]
+
+{ #category : #'as yet unclassified' }
+HOPVisualizer >> setJSSource: aJSSource cacheSource: cacheSource [
+	"Public method"
+	self sourceCode: aJSSource.
+	self processCacheSource: cacheSource.
+
+]
+
+{ #category : #'as yet unclassified' }
+HOPVisualizer >> sourceCode: aJSSource [
+	"Set the source code"
+	rubricModel sourceCode: aJSSource
 ]

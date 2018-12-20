@@ -67,6 +67,12 @@ HOPRubric >> initialize [
 ]
 
 { #category : #public }
+HOPRubric >> numberOfSegments [
+	"Return the number of segments contained in the rubric model"
+	^ segments size
+]
+
+{ #category : #public }
 HOPRubric >> open [
 	<script: 'self new open'>
 	
@@ -136,7 +142,10 @@ HOPRubric >> sourceCode [
 
 { #category : #accessing }
 HOPRubric >> sourceCode: sourceCodeAsString [
-	sourceCode := sourceCodeAsString asText.
+	"Set the source code in the rubric model"
+	
+	"Converting the source as Text does not seem to have much impact"
+	sourceCode := sourceCodeAsString "asText".
 	self highlightFunctionDeclarations.
 ]
 

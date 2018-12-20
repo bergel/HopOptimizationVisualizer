@@ -1228,6 +1228,15 @@ HOPBasicTest >> testBasic [
 	| window |
 	[ window := HOPVisualizer new
 		openOnJSSource: HOPBasicTest new exampleJS
-		cacheSource: HOPBasicTest new exampleCacheAndLocationJSON ]
+		cacheSource: HOPBasicTest new exampleCacheAndLocationJSON. ]
 		ensure: [ window ifNotNil: [ window delete ] ]
+]
+
+{ #category : #tests }
+HOPBasicTest >> testBasic2 [
+	| h |
+	h := HOPVisualizer new.
+	h setJSSource: HOPBasicTest new exampleJS cacheSource: HOPBasicTest new exampleCacheAndLocationJSON.
+	
+	self assert: h rubricModel numberOfSegments equals: 29.
 ]
