@@ -1240,3 +1240,12 @@ HOPBasicTest >> testBasic2 [
 	
 	self assert: h rubricModel numberOfSegments equals: 29.
 ]
+
+{ #category : #tests }
+HOPBasicTest >> testRunningExamples [
+	| w |
+	(HOPVisualizer selectors select: [ :k | k beginsWith: 'example' ])
+		do: [ :k | 
+			[ w := HOPVisualizer new perform: k ]
+				ensure: [ w ifNotNil: [ w delete ] ] ]
+]

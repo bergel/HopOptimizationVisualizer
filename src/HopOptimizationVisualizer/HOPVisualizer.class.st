@@ -7,17 +7,17 @@ Class {
 	#category : #HopOptimizationVisualizer
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'public - examples' }
 HOPVisualizer >> example [
 	<script: 'self new example'>
-	self 
+	^ self 
 		openOnJSSource: HOPBasicTest new exampleJS cacheSource: HOPBasicTest new exampleCacheAndLocationJSON
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'public - examples' }
 HOPVisualizer >> exampleRichards [
 	<script: 'self new exampleRichards'>
-	self 
+	^ self 
 		openOnJSSource: HOPBasicTest new exampleRichardsJS cacheSource: HOPBasicTest new exampleRichardCacheAndLocationJSON
 ]
 
