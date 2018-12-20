@@ -34,6 +34,19 @@ HOPVisualizer >> exampleRichards [
 		openOnJSSource: HOPBasicTest new exampleRichardsJS cacheSource: HOPBasicTest new exampleRichardCacheAndLocationJSON
 ]
 
+{ #category : #'public - examples' }
+HOPVisualizer >> exampleSmallExample [
+	<script: 'self new exampleSmallExample'>
+	
+	| path |
+	path := '/Users/alexandrebergel/Dropbox/GitRepos/HopOptimizationVisualizer/Examples/fields_accessors/'.
+	
+	^ self 
+		openOnJSFilename: path, 'fields.js' cacheFilename: path, 'traceCache.json'
+		
+	
+]
+
 { #category : #initialize }
 HOPVisualizer >> initialize [
 	super initialize.

@@ -87,15 +87,15 @@ HOPCodeHighlight >> colorMapping: aCM [
 	colorMapping := aCM 
 ]
 
-{ #category : #initialization }
+{ #category : #printing }
 HOPCodeHighlight >> displayString [
 	| w |
 	w := WriteStream on: String new.
 	w nextPutAll: 'imap = '; nextPutAll: imap asStringWithCommas; cr.
 	w nextPutAll: 'cmap = '; nextPutAll: cmap asStringWithCommas; cr.
 	w nextPutAll: 'emap = '; nextPutAll: emap asStringWithCommas; cr.
-	w nextPutAll: 'amap = '; nextPutAll: amap asStringWithCommas; cr.
-	w nextPutAll: 'pmap = '; nextPutAll: pmap asStringWithCommas; cr.
+	w nextPutAll: 'amap (accessor) = '; nextPutAll: amap asStringWithCommas; cr.
+	w nextPutAll: 'pmap (prototype chain)= '; nextPutAll: pmap asStringWithCommas; cr.
 	w nextPutAll: 'vtable = '; nextPutAll: vtable asStringWithCommas; cr.
 	w cr.
 	w nextPutAll: 'usage = '; nextPutAll: usage.
