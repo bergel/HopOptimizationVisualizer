@@ -19,6 +19,10 @@ HOPCodeHighlightCollectionTest >> testEmpty [
 
 { #category : #running }
 HOPCodeHighlightCollectionTest >> testWithOneHighlight [
-	c add: HOPCodeHighlight new.
-	self assert: c numberOfHighlights equals: 1
+	| h |
+	h := HOPCodeHighlight new.
+	self assert: h highlightCollection isNil.
+	c add: h.
+	self assert: c numberOfHighlights equals: 1.
+	self assert: h highlightCollection equals: c
 ]

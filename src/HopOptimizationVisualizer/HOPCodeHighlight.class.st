@@ -9,7 +9,9 @@ Class {
 		'cmap',
 		'pmap',
 		'amap',
-		'vtable'
+		'vtable',
+		'token',
+		'highlightCollection'
 	],
 	#classVars : [
 		'ColorTable'
@@ -17,22 +19,22 @@ Class {
 	#category : #HopOptimizationVisualizer
 }
 
-{ #category : #accessing }
+{ #category : #'accessing caches' }
 HOPCodeHighlight >> amap [
 	^ amap
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing caches' }
 HOPCodeHighlight >> amap: aPositiveInteger [
 	amap := aPositiveInteger
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing caches' }
 HOPCodeHighlight >> cmap [
 	^ cmap
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing caches' }
 HOPCodeHighlight >> cmap: aPositiveInteger [
 	cmap := aPositiveInteger
 ]
@@ -72,43 +74,68 @@ HOPCodeHighlight >> color [
 HOPCodeHighlight >> displayString [
 	| w |
 	w := WriteStream on: String new.
-	w nextPutAll: 'imap = '; nextPutAll: imap asString; cr.
-	w nextPutAll: 'cmap = '; nextPutAll: cmap asString; cr.
-	w nextPutAll: 'emap = '; nextPutAll: emap asString; cr.
-	w nextPutAll: 'amap = '; nextPutAll: amap asString; cr.
-	w nextPutAll: 'pmap = '; nextPutAll: pmap asString; cr.
-	w nextPutAll: 'vtable = '; nextPutAll: vtable asString; cr.
+	w nextPutAll: 'imap = '; nextPutAll: imap asStringWithCommas; cr.
+	w nextPutAll: 'cmap = '; nextPutAll: cmap asStringWithCommas; cr.
+	w nextPutAll: 'emap = '; nextPutAll: emap asStringWithCommas; cr.
+	w nextPutAll: 'amap = '; nextPutAll: amap asStringWithCommas; cr.
+	w nextPutAll: 'pmap = '; nextPutAll: pmap asStringWithCommas; cr.
+	w nextPutAll: 'vtable = '; nextPutAll: vtable asStringWithCommas; cr.
 	w cr.
 	w nextPutAll: 'usage = '; nextPutAll: usage.
 	^ w contents
 ]
 
-{ #category : #accessing }
+{ #category : #'public - actions' }
+HOPCodeHighlight >> doInspect [
+	self inspect
+]
+
+{ #category : #'accessing caches' }
 HOPCodeHighlight >> emap [
 	^ emap
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing caches' }
 HOPCodeHighlight >> emap: aPositiveInteger [
 	emap := aPositiveInteger
 ]
 
+{ #category : #visualization }
+HOPCodeHighlight >> gtBoxPlotsIn: composite [
+	<gtInspectorPresentationOrder: -20>
+	composite roassal2
+		title: 'BoxPlot';
+		initializeView: [ self visualizeBoxplots ]
+]
+
 { #category : #accessing }
+HOPCodeHighlight >> highlightCollection [
+	"Collection in which I am contained. Return nil if not yet set"
+	^ highlightCollection
+]
+
+{ #category : #accessing }
+HOPCodeHighlight >> highlightCollection: aCodeHighlightCollection [
+	"Set the collection in which I am contained. Return nil if not yet set"
+	highlightCollection := aCodeHighlightCollection
+]
+
+{ #category : #'accessing caches' }
 HOPCodeHighlight >> imap [
 	^ imap
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing caches' }
 HOPCodeHighlight >> imap: aPositiveInteger [
 	imap := aPositiveInteger
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing caches' }
 HOPCodeHighlight >> index [
 	^ index
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing caches' }
 HOPCodeHighlight >> index: aPositiveInteger [
 	index := aPositiveInteger
 ]
@@ -123,10 +150,11 @@ HOPCodeHighlight >> initialize [
 	amap := 0.
 	vtable := 0.
 	index := -1.
-	usage := 'NOT SPECIFIED'
+	usage := 'NOT SPECIFIED'.
+	token := 'NOT SPECIFIED'.
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 HOPCodeHighlight >> initializeColorTableIfNecessary [
 	ColorTable
 		ifNil: [ ColorTable := {(Color h: 120 s: 1 l: 0.5).
@@ -137,32 +165,76 @@ HOPCodeHighlight >> initializeColorTableIfNecessary [
 			(Color h: 0 s: 1 l: 0.5)} ]
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing caches' }
 HOPCodeHighlight >> pmap [
 	^ pmap
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing caches' }
 HOPCodeHighlight >> pmap: aPositiveInteger [
 	pmap := aPositiveInteger
 ]
 
 { #category : #accessing }
+HOPCodeHighlight >> token [
+	"Token related to which the highlight refers to"
+	^ token
+]
+
+{ #category : #accessing }
+HOPCodeHighlight >> token: aTokenAsString [
+	"Set the token to which the highlight refers to"
+	token := aTokenAsString
+]
+
+{ #category : #'accessing caches' }
 HOPCodeHighlight >> usage [
 	^ usage
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing caches' }
 HOPCodeHighlight >> usage: aPositiveInteger [
 	usage := aPositiveInteger
 ]
 
-{ #category : #accessing }
+{ #category : #visualization }
+HOPCodeHighlight >> visualizeBoxplots [
+
+| b d deco |
+b := RTGrapher new.
+
+#(#imap #cmap #emap #amap #pmap #vtable) doWithIndex: [ :k :ind | 
+	(self perform: k) ~= 0 ifTrue: [
+		d := RTBoxPlotDataSet new.
+		d points: (highlightCollection collect: k).
+		d y: #yourself.
+		d x: ind.
+		b add: d.
+		
+		d := RTData new.
+		d dotShape color: Color red.
+		d points: (Array with: self).
+		d y: k.
+		d x: ind.
+		b add: d.
+		
+		deco := RTHorizontalAllValuesDecorator new.
+		"deco labelRotation: -45;"
+		deco labelConversion: [ :vv | k ].
+		b addDecorator: deco.
+	]
+].
+
+b axisX noTick.
+^ b
+]
+
+{ #category : #'accessing caches' }
 HOPCodeHighlight >> vtable [
 	^ vtable
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing caches' }
 HOPCodeHighlight >> vtable: aPositiveInteger [
 	vtable := aPositiveInteger
 ]

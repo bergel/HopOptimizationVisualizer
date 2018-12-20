@@ -14,6 +14,7 @@ HOPRubric >> addHighlight: anHighlight [
 	anHighlight index = -1 ifTrue: [ ^ self ].
 	anHighlight index > self sourceCode size ifTrue: [ ^ self ].
 	
+	anHighlight token: (self tokenAtIndex: anHighlight index).
 	highlightCollection add: anHighlight.
 	
 "	seg := RubPlainSegmentMorph from: index to: index + token size.
@@ -140,8 +141,16 @@ HOPRubric >> processHighlights [
 			segment := RubPlainSegmentMorph from: index to: index + token size.
 			segment setBalloonText: anHighlight displayString.
 			segment color: anHighlight color.
-			self addSegment: segment.
-			segments add: segment ]
+			segment label: 'Inspect'.
+			
+			"Inspect ThemeIcons for more icons"
+			segment icon: (self iconNamed: #smallInspectIt).
+			
+			segment
+				iconBlock: [ :s  | 
+					anHighlight doInspect ].
+				
+			self addSegment: segment ]
 ]
 
 { #category : #initialization }

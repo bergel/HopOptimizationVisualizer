@@ -9,7 +9,14 @@ Class {
 
 { #category : #adding }
 HOPCodeHighlightCollection >> add: anHighlight [
-	highlights add: anHighlight 
+	highlights add: anHighlight.
+	anHighlight highlightCollection: self
+]
+
+{ #category : #enumerating }
+HOPCodeHighlightCollection >> collect: aOneArgBlock [
+	"The argument is evaluated for each highlight. The block takes the highlight as argument"
+	^ highlights collect: aOneArgBlock
 ]
 
 { #category : #enumerating }
