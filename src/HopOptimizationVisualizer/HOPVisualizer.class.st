@@ -40,6 +40,7 @@ HOPVisualizer >> initialize [
 	rubricModel := HOPRubric new.
 	colorMapping := HOPMostRelevantMethodMapping new.
 	"colorMapping := HOPNumberOfExecutionMapping new."
+	colorMapping := HOPMostRelevantCacheMapping new.
 ]
 
 { #category : #'public - opening' }
